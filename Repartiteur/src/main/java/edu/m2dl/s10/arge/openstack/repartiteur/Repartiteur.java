@@ -19,6 +19,9 @@ import java.util.*;
  */
 public class Repartiteur {
 
+    public static String mode = "LOCAL"; // Utilise les calculateurs locaux
+    //public static String mode = "PROD"; // Utilise les calculateurs sur cloudMIP
+
     private String port;
     private static List<CalculateurLocal> lesCalculateurs = new ArrayList();
 
@@ -29,9 +32,8 @@ public class Repartiteur {
 
         String port = args[0];
 
-        // Boucle de reception des requetes
-
         Repartiteur r = new Repartiteur(port);
+
         // Lancement du serveur
         WebServer webServer = new WebServer(new Integer(port));
         XmlRpcServer xmlRpcServer = webServer.getXmlRpcServer();
@@ -47,19 +49,21 @@ public class Repartiteur {
         serverConfig.setContentLengthOptional(false);
 
         try {
-            System.out.println("REPARTITEUR -> LANCEMENT DU SERVEUR");
+            System.out.println("REPARTITEUR -> LANCEMENT DU SERVEUR ["+mode+"]");
             webServer.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        OpenStackService ops = new OpenStackService();
-        CalculateurLocal cal = ops.addVM();
+        if(mode.equals("PROD")) {
+            System.out.println("REPARTITEUR -> LANCEMENT DU CALCULATEUR INITIAL");
+            OpenStackService ops = new OpenStackService();
+            CalculateurLocal cal = ops.addVM();
 
-        // AJOUT D'UN PREMIER CALCULATEUR
-        lesCalculateurs.add(cal);
-        System.out.println(cal);
-
+            // AJOUT D'UN PREMIER CALCULATEUR
+            lesCalculateurs.add(cal);
+            System.out.println(cal);
+        }
     }
 
 
@@ -68,30 +72,40 @@ public class Repartiteur {
     }
 
     public Repartiteur() {
-        System.out.println("CONSTRUCTEUR = "+lesCalculateurs.size());
+        System.out.println("CONSTRUCTEUR AUTO = "+lesCalculateurs.size());
     }
 
     public Boolean add(String ip, String port) {
 
-        OpenStackService ops = new OpenStackService();
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        CalculateurLocal calculateurLocal = null;
+
+        if(mode.equals("PROD")) {
+            OpenStackService ops = new OpenStackService();
+            calculateurLocal = ops.addVM();
         }
-        CalculateurLocal calculateurLocal = ops.addVM();
+
+        if(mode.equals("LOCAL")) {
+            calculateurLocal = new CalculateurLocal("localhost", port, null);
+        }
+
         lesCalculateurs.add(calculateurLocal);
         System.out.println("ADD ["+calculateurLocal.ip+", "+lesCalculateurs.size()+" calculateurs]");
         return true;
     }
 
     public Boolean del(String ip, String port) {
-        OpenStackService ops = new OpenStackService();
+        OpenStackService ops = null;
+        if(mode.equals("PROD")) {
+            ops = new OpenStackService();
+        }
+
         for (Iterator<CalculateurLocal> iterator = lesCalculateurs.iterator(); iterator.hasNext();) {
             CalculateurLocal calculateurLocal = iterator.next();
             if (calculateurLocal.port.equals(port) && calculateurLocal.ip.equals(ip)) {
-                ops.deleteVM(calculateurLocal);
+                if(mode.equals("PROD")) {
+                    ops.deleteVM(calculateurLocal);
+                }
                 iterator.remove();
             }
         }

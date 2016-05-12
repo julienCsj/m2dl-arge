@@ -55,7 +55,18 @@ public class Calculateur {
 
     }
 
-    public Integer calcul(Integer calcul) {
-        return calcul*calcul;
+    // Calcul du Nieme element de la suite de Fibonacci avec une boucle
+    public Double calcul(Integer number) {
+        if(number == 1 || number == 2){
+            return 1D;
+        }
+        int fibo1=1, fibo2=1, fibonacci=1;
+        for(int i= 3; i<= number; i++){
+            fibonacci = fibo1 + fibo2;
+            fibo1 = fibo2;
+            fibo2 = fibonacci;
+
+        }
+        return new Double(fibonacci);
     }
 }

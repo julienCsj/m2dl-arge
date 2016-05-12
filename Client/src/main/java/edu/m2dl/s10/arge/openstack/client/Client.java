@@ -13,6 +13,8 @@ import org.apache.xmlrpc.webserver.WebServer;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.Random;
+
 import static java.lang.Thread.sleep;
 
 public class Client {
@@ -89,7 +91,7 @@ public class Client {
         while (true) {
 
             try {
-                Object[] params = new Object[] {new Integer(2)};
+                Object[] params = new Object[] {randInt(10, 100)};
                 Integer result = null;
                 result = (Integer) client.execute("Repartiteur.request", params);
                 System.out.println("RESULT REPARTITEUR = "+result);
@@ -99,5 +101,11 @@ public class Client {
 
             sleep(1000/nbReq);
         }
+    }
+
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
     }
 }
