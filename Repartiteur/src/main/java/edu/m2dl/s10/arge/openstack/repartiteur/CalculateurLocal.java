@@ -10,9 +10,21 @@ public class CalculateurLocal {
     public String ip;
     public String port;
     public Date lastUsage;
+    public String id;
 
-    public CalculateurLocal(String ip, String port) {
+    public CalculateurLocal(String ip, String port, String id) {
         this.ip = ip;
         this.port = port;
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "CalculateurLocal{" +
+                "ip='" + ip + '\'' +
+                ", port='" + port + '\'' +
+                ", lastUsage=" + lastUsage +
+                ", id='" + id + '\'' +
+                '}';
     }
 }
