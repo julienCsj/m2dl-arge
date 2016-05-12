@@ -113,7 +113,7 @@ public class Repartiteur {
         return true;
     }
 
-    public Double request(Integer request) {
+    public Long request(Integer request) {
         // Choisir un calculateur
         System.out.println("RAND(1, "+lesCalculateurs.size()+")");
         int random = randInt(1, lesCalculateurs.size())-1;
@@ -122,7 +122,7 @@ public class Repartiteur {
 
         // CONFIGURATION DU CLIENT POUR APPELER LE CALCULATEUR DISTANT
         XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-        Double result = null;
+        Long result = null;
         try {
             config.setServerURL(new URL("http://"+calculateurLocal.ip+":"+calculateurLocal.port+"/xmlrpc"));
             config.setEnabledForExtensions(true);
@@ -137,20 +137,40 @@ public class Repartiteur {
             client.setConfig(config);
 
             Object[] params = new Object[] {new Integer(request)};
-            result = (Double) client.execute("Calculateur.calcul", params);
+            result = (Long) client.execute("Calculateur.calcul", params);
 
             params = new Object[] {};
             calculateurLocal.load = (Double) client.execute("Calculateur.getLoad", params);
             System.out.println("REPARTITEUR -> LA CHARGE DE ["+calculateurLocal.ip+"] est de "+calculateurLocal.load);
 
-
             System.out.println("RESULT REPARTITEUR = "+result);
+
+            loadBalancing();
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (XmlRpcException e) {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private void loadBalancing() {
+        Double moyenneLoad = 0D;
+        for (CalculateurLocal calculateur : lesCalculateurs) {
+            moyenneLoad += calculateur.load;
+        }
+        moyenneLoad = moyenneLoad / lesCalculateurs.size();
+        System.out.println("CHARGE MOYENNE DU SYSTEME = "+moyenneLoad);
+
+        // Pas plus de 3 VM de calcul
+        if(moyenneLoad > 80 && lesCalculateurs.size() < 3) {
+            System.out.println("AJOUT D'UNE VM !");
+        }
+
+        if(moyenneLoad < 20 && lesCalculateurs.size() > 1) {
+            System.out.println("DELETE VM !");
+        }
     }
 
 

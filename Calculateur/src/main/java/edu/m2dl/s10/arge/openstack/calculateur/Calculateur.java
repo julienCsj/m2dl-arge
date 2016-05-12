@@ -57,22 +57,23 @@ public class Calculateur {
     }
 
     // Calcul du Nieme element de la suite de Fibonacci avec une boucle
-    public Double calcul(Integer number) {
+    public Long calcul(Integer number) {
         if(number == 1 || number == 2){
-            return 1D;
+            return 1L;
         }
-        int fibo1=1, fibo2=1, fibonacci=1;
+        long fibo1=1, fibo2=1, fibonacci=1;
         for(int i= 3; i<= number; i++){
+            fibonacci = fibo1 + fibo2;
             fibonacci = fibo1 + fibo2;
             fibo1 = fibo2;
             fibo2 = fibonacci;
 
         }
-        return new Double(fibonacci);
+        return fibonacci;
     }
 
     public Double getLoad() {
         SystemInfo systemInfo = new SystemInfo();
-        return systemInfo.getHardware().getProcessor().getSystemLoadAverage();
+        return systemInfo.getHardware().getProcessor().getSystemCpuLoad();
     }
 }
