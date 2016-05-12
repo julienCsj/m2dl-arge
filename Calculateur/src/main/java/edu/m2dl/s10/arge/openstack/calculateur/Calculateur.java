@@ -5,6 +5,7 @@ import org.apache.xmlrpc.server.PropertyHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.WebServer;
+import oshi.SystemInfo;
 
 import java.io.IOException;
 
@@ -68,5 +69,10 @@ public class Calculateur {
 
         }
         return new Double(fibonacci);
+    }
+
+    public Double getLoad() {
+        SystemInfo systemInfo = new SystemInfo();
+        return systemInfo.getHardware().getProcessor().getSystemLoadAverage();
     }
 }

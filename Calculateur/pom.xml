@@ -11,6 +11,14 @@
 
     <artifactId>arge.openstack.calculateur</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.dblock</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>2.2</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

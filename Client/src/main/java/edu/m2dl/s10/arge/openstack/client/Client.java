@@ -91,10 +91,11 @@ public class Client {
         while (true) {
 
             try {
-                Object[] params = new Object[] {randInt(10, 100)};
-                Integer result = null;
-                result = (Integer) client.execute("Repartiteur.request", params);
-                System.out.println("RESULT REPARTITEUR = "+result);
+                Integer random = randInt(10, 100);
+                Object[] params = new Object[] {random};
+                Double result = null;
+                result = (Double) client.execute("Repartiteur.request", params);
+                System.out.println("fib("+random+") = "+result);
             } catch (XmlRpcException e) {
                 e.printStackTrace();
             }

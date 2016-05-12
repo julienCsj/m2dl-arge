@@ -11,11 +11,13 @@ public class CalculateurLocal {
     public String port;
     public Date lastUsage;
     public String id;
+    public double load;
 
     public CalculateurLocal(String ip, String port, String id) {
         this.ip = ip;
         this.port = port;
         this.id = id;
+        this.load = 0;
     }
 
     @Override
