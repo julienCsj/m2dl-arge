@@ -58,18 +58,14 @@ public class Calculateur {
 
     // Calcul du Nieme element de la suite de Fibonacci avec une boucle
     public Long calcul(Integer number) {
-        if(number == 1 || number == 2){
-            return 1L;
-        }
-        long fibo1=1, fibo2=1, fibonacci=1;
-        for(int i= 3; i<= number; i++){
-            fibonacci = fibo1 + fibo2;
-            fibonacci = fibo1 + fibo2;
-            fibo1 = fibo2;
-            fibo2 = fibonacci;
-
-        }
-        return fibonacci;
+        System.out.println("REQUEST FOR "+number);
+        Double myBigNumber = Math.pow(2, number) + 1;
+        long result = 0;
+        System.out.println("Debut boucle");
+        for(int n = 1 ; n <= myBigNumber; n++)
+            if(myBigNumber % n == 0)
+                result++;
+        return result;
     }
 
     public Double getLoad() {

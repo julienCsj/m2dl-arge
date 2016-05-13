@@ -91,7 +91,7 @@ public class Client {
         while (true) {
 
             try {
-                Integer random = randInt(10, 100);
+                Integer random = randInt(24, 27);
                 Object[] params = new Object[] {random};
                 Long result = null;
                 result = (Long) client.execute("Repartiteur.request", params);
