@@ -20,12 +20,12 @@ import static java.lang.Thread.sleep;
 public class Client {
     private static int nbReq;
     private static String ipRepartiteur;
-    private static String port;
+    private static String portRepartiteur;
 
     public Client(int nbReq, String ipRepartiteur, String port) {
         this.nbReq = nbReq;
         this.ipRepartiteur = ipRepartiteur;
-        this.port = port;
+        this.portRepartiteur = port;
     }
 
     public Client() {
@@ -37,7 +37,7 @@ public class Client {
         System.out.println("APPEL DE UPDATE");
         this.nbReq = nbReq;
         this.ipRepartiteur = ipRepartiteur;
-        this.port = port;
+        this.portRepartiteur = port;
         return true;
     }
 
@@ -48,11 +48,11 @@ public class Client {
         }
 
         nbReq = new Integer(args[0]);
-        String ipRepartiteur = args[1];
-        String portRepartiteur = args[2];
+        ipRepartiteur = args[1];
+        portRepartiteur = args[2];
 
         // LANCEMENT DU SERVEUR POUR RECEVOIR LES REQUETES DE UPDATECLIENT
-        WebServer webServer = new WebServer(7070);
+        WebServer webServer = new WebServer(6060);
         XmlRpcServer xmlRpcServer = webServer.getXmlRpcServer();
         PropertyHandlerMapping phm = new PropertyHandlerMapping();
         try {

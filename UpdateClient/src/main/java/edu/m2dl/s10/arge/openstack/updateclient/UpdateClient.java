@@ -21,7 +21,7 @@ public class UpdateClient {
         }
 
         XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-        config.setServerURL(new URL("http://127.0.0.1:7070/xmlrpc"));
+        config.setServerURL(new URL("http://127.0.0.1:6060/xmlrpc"));
         config.setEnabledForExtensions(true);
         config.setConnectionTimeout(60 * 1000);
         config.setReplyTimeout(60 * 1000);

@@ -49,7 +49,7 @@ public class Repartiteur {
         serverConfig.setContentLengthOptional(false);
 
         try {
-            System.out.println("REPARTITEUR -> LANCEMENT DU SERVEUR ["+mode+"]");
+            System.out.println("REPARTITEUR -> LANCEMENT DU SERVEUR ["+mode+"] sur le port ["+port+"]");
             webServer.start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,6 +136,7 @@ public class Repartiteur {
             // set configuration
             client.setConfig(config);
 
+            System.out.println("** ENVOI D'UN CALCUL AU CALCULATEUR");
             Object[] params = new Object[] {new Integer(request)};
             result = (Long) client.execute("Calculateur.calcul", params);
 
@@ -166,10 +167,12 @@ public class Repartiteur {
         // Pas plus de 3 VM de calcul
         if(moyenneLoad > 0.80 && lesCalculateurs.size() < 3) {
             System.out.println("AJOUT D'UNE VM !");
+            //add(null, null);
         }
 
         if(moyenneLoad < 0.20 && lesCalculateurs.size() > 1) {
             System.out.println("DELETE VM !");
+            //del(, null);
         }
     }
 

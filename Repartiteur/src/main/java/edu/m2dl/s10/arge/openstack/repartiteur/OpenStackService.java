@@ -21,7 +21,7 @@ public class OpenStackService {
 
     public OpenStackService() {
         System.out.println("** Connexion à l'API CLOUDMIP");
-        String url = "http://cloudmip.univ-tlse3.fr:5000/v2.0";
+        String url = "http://195.220.53.61:5000/v2.0";
         System.out.println(url);
         os = OSFactory.builder()
                 .endpoint(url)
@@ -38,11 +38,13 @@ public class OpenStackService {
 
         ServerCreate sc;
         List networksId = Arrays.asList("c1445469-4640-4c5a-ad86-9c0cb6650cca");
-        sc = Builders.server().name("julien-elliot-cal"+new Date().getTime())
+        sc = Builders.server().name("julien-elliot-cal-"+new Date().getTime())
                 .flavor("2") // SMALL
-                .image("92db401b-2e08-4632-86d3-b9a5f526ea30")
+                .image("e0dcc0a9-6132-40c7-9efc-034e5618daef")
                 .keypairName("mykeyJulien")
-                .networks(networksId).build();
+                .networks(networksId)
+                .userData("")
+                .build();
 
         Server server = os.compute().servers().boot(sc);
 
@@ -70,7 +72,7 @@ public class OpenStackService {
 
         System.out.println("** SUCCESS -> Calculateur ["+address.getAddr()+"] crée");
 
-        CalculateurLocal calculateurLocal = new CalculateurLocal(address.getAddr(), "8080", server.getId());
+        CalculateurLocal calculateurLocal = new CalculateurLocal(address.getAddr(), "7070", server.getId());
         return calculateurLocal;
 
     }
