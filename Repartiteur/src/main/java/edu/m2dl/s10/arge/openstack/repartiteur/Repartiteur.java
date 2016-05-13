@@ -19,8 +19,8 @@ import java.util.*;
  */
 public class Repartiteur {
 
-    public static String mode = "LOCAL"; // Utilise les calculateurs locaux
-    //public static String mode = "PROD"; // Utilise les calculateurs sur cloudMIP
+    //public static String mode = "LOCAL"; // Utilise les calculateurs locaux
+    public static String mode = "PROD"; // Utilise les calculateurs sur cloudMIP
 
     private String port;
     private static List<CalculateurLocal> lesCalculateurs = new ArrayList();

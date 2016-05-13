@@ -40,7 +40,7 @@ public class OpenStackService {
         List networksId = Arrays.asList("c1445469-4640-4c5a-ad86-9c0cb6650cca");
         sc = Builders.server().name("julien-elliot-cal"+new Date().getTime())
                 .flavor("2") // SMALL
-                .image("ff9d33d5-6e36-49ab-9c11-34af125d2eed")
+                .image("92db401b-2e08-4632-86d3-b9a5f526ea30")
                 .keypairName("mykeyJulien")
                 .networks(networksId).build();
 
