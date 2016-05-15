@@ -25,6 +25,10 @@ public class Repartiteur {
     private String port;
     private static List<CalculateurLocal> lesCalculateurs = new ArrayList();
 
+    private static List<Double> cpuLoadHistory = new ArrayList();
+    private static int currentPositionHistory = 0;
+    private static final int HISTORY_SIZE = 10;
+
     public static void main(String[] args) {
         if(args.length != 1) {
             System.out.println("Il faut fournir le numéro du port");
@@ -157,23 +161,40 @@ public class Repartiteur {
     }
 
     private void loadBalancing() {
+
+        // Calcul de la moyenne de consommation courante
         Double moyenneLoad = 0D;
         for (CalculateurLocal calculateur : lesCalculateurs) {
             moyenneLoad += calculateur.load;
         }
         moyenneLoad = moyenneLoad / lesCalculateurs.size();
-        //System.out.println("CHARGE MOYENNE DU SYSTEME = "+moyenneLoad);
 
-        // Pas plus de 3 VM de calcul
-        if(moyenneLoad > 0.80 && lesCalculateurs.size() < 3) {
-            System.out.println("AJOUT D'UNE VM !");
-            //add(null, null);
-        }
+        // Ajout de la moyenne à l'historique
+        cpuLoadHistory.add(currentPositionHistory, moyenneLoad);
 
-        if(moyenneLoad < 0.20 && lesCalculateurs.size() > 1) {
-            System.out.println("DELETE VM !");
-            //del(, null);
+        if (currentPositionHistory == HISTORY_SIZE) {
+            Double averageConsumption = averageConsumption();
+
+            // Pas plus de 3 VM de calcul
+            if(averageConsumption > 0.80 && lesCalculateurs.size() < 3) {
+                System.out.println("AJOUT D'UNE VM : charge de "+averageConsumption());
+                //add(null, null);
+            }
+
+            if(averageConsumption < 0.20 && lesCalculateurs.size() > 1) {
+                System.out.println("DELETE VM !");
+                //del(, null);
+            }
         }
+        currentPositionHistory = (currentPositionHistory + 1) % HISTORY_SIZE;
+    }
+
+    private Double averageConsumption() {
+        Double res = 0D;
+        for (Double d : cpuLoadHistory) {
+            res += d;
+        }
+        return res / HISTORY_SIZE;
     }
 
 
