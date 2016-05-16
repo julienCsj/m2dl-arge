@@ -104,6 +104,11 @@ public class Repartiteur {
             ops = new OpenStackService();
         }
 
+        if(ip == null && port == null) {
+            CalculateurLocal cal = lesCalculateurs.get(lesCalculateurs.size()-1);
+            ops.deleteVM(cal);
+        }
+
         for (Iterator<CalculateurLocal> iterator = lesCalculateurs.iterator(); iterator.hasNext();) {
             CalculateurLocal calculateurLocal = iterator.next();
             if (calculateurLocal.port.equals(port) && calculateurLocal.ip.equals(ip)) {
@@ -119,10 +124,8 @@ public class Repartiteur {
 
     public Long request(Integer request) {
         // Choisir un calculateur
-        //System.out.println("RAND(1, "+lesCalculateurs.size()+")");
         int random = randInt(1, lesCalculateurs.size())-1;
         CalculateurLocal calculateurLocal = lesCalculateurs.get(random);
-        //System.out.println("REQUEST ["+request+", "+lesCalculateurs.size()+" calculateurs, "+random+" prend en charge la requete]");
 
         // CONFIGURATION DU CLIENT POUR APPELER LE CALCULATEUR DISTANT
         XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
@@ -148,8 +151,7 @@ public class Repartiteur {
             calculateurLocal.load = (Double) client.execute("Calculateur.getLoad", params);
             System.out.println("REPARTITEUR -> LA CHARGE DE ["+calculateurLocal.ip+"] est de "+calculateurLocal.load);
 
-            //System.out.println("RESULT REPARTITEUR = "+result);
-
+            // On effectue le load balancing
             loadBalancing();
 
         } catch (MalformedURLException e) {
@@ -178,12 +180,12 @@ public class Repartiteur {
             // Pas plus de 3 VM de calcul
             if(averageConsumption > 0.80 && lesCalculateurs.size() < 3) {
                 System.out.println("AJOUT D'UNE VM : charge de "+averageConsumption());
-                //add(null, null);
+                add(null, null);
             }
 
             if(averageConsumption < 0.20 && lesCalculateurs.size() > 1) {
                 System.out.println("DELETE VM !");
-                //del(, null);
+                del(null, null);
             }
         }
         currentPositionHistory = (currentPositionHistory + 1) % HISTORY_SIZE;
