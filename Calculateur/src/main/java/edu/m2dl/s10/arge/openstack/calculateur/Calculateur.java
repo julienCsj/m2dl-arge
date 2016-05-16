@@ -56,15 +56,17 @@ public class Calculateur {
 
     }
 
-    // Calcul du Nieme element de la suite de Fibonacci avec une boucle
-    public Long calcul(Integer number) {
-        System.out.println("REQUEST FOR "+number);
-        Double myBigNumber = Math.pow(2, number) + 1;
+    // Calcule le nombre de diviseurs de 2^n – 1
+    public Long calcul(Integer n) {
+        System.out.println("Calcul pour : 2^"+n+"-1");
+        Double calcul = Math.pow(2, n) - 1;
         long result = 0;
-        System.out.println("Debut boucle");
-        for(int n = 1 ; n <= myBigNumber; n++)
-            if(myBigNumber % n == 0)
+        for(int i = 1 ; i <= calcul; i++) {
+            if (calcul % i == 0) {
                 result++;
+            }
+        }
+        System.out.println("Résultat : "+result);
         return result;
     }
 

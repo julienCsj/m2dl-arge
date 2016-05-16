@@ -95,7 +95,7 @@ public class Client {
                 Object[] params = new Object[] {random};
                 Long result = null;
                 result = (Long) client.execute("Repartiteur.request", params);
-                System.out.println("fib("+random+") = "+result);
+                System.out.println("diviseurs(2^"+random+"-1) = "+result);
             } catch (XmlRpcException e) {
                 e.printStackTrace();
             }
