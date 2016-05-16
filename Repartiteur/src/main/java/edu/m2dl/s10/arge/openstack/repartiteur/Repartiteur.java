@@ -181,12 +181,12 @@ public class Repartiteur {
 
             // Pas plus de 3 VM de calcul
             if(averageConsumption > 0.80 && lesCalculateurs.size() < 3) {
-                System.out.println("AJOUT D'UNE VM");
+                System.out.println("AJOUT VM");
                 add(null, null);
             }
 
             if(averageConsumption < 0.20 && lesCalculateurs.size() > 1) {
-                System.out.println("DELETE VM !");
+                System.out.println("DELETE VM");
                 del(null, null);
             }
         }
