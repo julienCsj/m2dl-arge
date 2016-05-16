@@ -177,9 +177,11 @@ public class Repartiteur {
         if (currentPositionHistory == HISTORY_SIZE) {
             Double averageConsumption = averageConsumption();
 
+            System.out.println("Charge moyenne : "+averageConsumption()*100+"%");
+
             // Pas plus de 3 VM de calcul
             if(averageConsumption > 0.80 && lesCalculateurs.size() < 3) {
-                System.out.println("AJOUT D'UNE VM : charge de "+averageConsumption());
+                System.out.println("AJOUT D'UNE VM");
                 add(null, null);
             }
 
